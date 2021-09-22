@@ -1,1 +1,2 @@
-export * from './restaurant-info.component';
+export * from './restaurant-info-card.component';
+export * from './restaurant-info-card.style';
