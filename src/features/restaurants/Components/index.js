@@ -1,2 +1,2 @@
 export * from './restaurant-info-card.component';
-export * from './restaurant-info-card.style';
+export * from './search.component';

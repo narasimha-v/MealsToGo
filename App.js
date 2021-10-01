@@ -13,6 +13,7 @@ import { SafeArea } from './src/components/utils';
 import { RestaurantsScreen } from './src/features/restaurants/screens';
 import { theme } from './src/infrastructure/theme';
 import { RestaurantsContextProvider } from './src/services/restaurants';
+import { LocationContextProvider } from './src/services/location';
 
 const Tab = createBottomTabNavigator();
 
@@ -63,15 +64,17 @@ export default function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<RestaurantsContextProvider>
-				<NavigationContainer>
-					<Tab.Navigator screenOptions={screenOptions}>
-						<Tab.Screen name={'Restaurants'} component={RestaurantsScreen} />
-						<Tab.Screen name={'Map'} component={Map} />
-						<Tab.Screen name={'Settings'} component={Settings} />
-					</Tab.Navigator>
-				</NavigationContainer>
-			</RestaurantsContextProvider>
+			<LocationContextProvider>
+				<RestaurantsContextProvider>
+					<NavigationContainer>
+						<Tab.Navigator screenOptions={screenOptions}>
+							<Tab.Screen name={'Restaurants'} component={RestaurantsScreen} />
+							<Tab.Screen name={'Map'} component={Map} />
+							<Tab.Screen name={'Settings'} component={Settings} />
+						</Tab.Navigator>
+					</NavigationContainer>
+				</RestaurantsContextProvider>
+			</LocationContextProvider>
 		</ThemeProvider>
 	);
 }
