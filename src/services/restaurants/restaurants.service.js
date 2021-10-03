@@ -20,7 +20,8 @@ export const restaurantTransform = ({ results = [] }) => {
 		return {
 			...restaurant,
 			isOpenNow: restaurant.opening_hours && restaurant.opening_hours.open_now,
-			isClosedTemporarily: restaurant.business_status === 'CLOSED_TEMPORARILY'
+			isClosedTemporarily: restaurant.business_status === 'CLOSED_TEMPORARILY',
+			address: restaurant.vicinity
 		};
 	});
 
