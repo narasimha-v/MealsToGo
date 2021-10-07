@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { Text } from 'react-native';
 import { SafeArea } from '../../components/utils';
-import { RestaurantsScreen } from '../../features/restaurants/screens';
+import { RestaurantsNavigator } from './restaurants.navigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +44,7 @@ export const AppNavigator = () => {
 	return (
 		<NavigationContainer>
 			<Tab.Navigator screenOptions={screenOptions}>
-				<Tab.Screen name={'Restaurants'} component={RestaurantsScreen} />
+				<Tab.Screen name={'Restaurants'} component={RestaurantsNavigator} />
 				<Tab.Screen name={'Map'} component={Map} />
 				<Tab.Screen name={'Settings'} component={Settings} />
 			</Tab.Navigator>
