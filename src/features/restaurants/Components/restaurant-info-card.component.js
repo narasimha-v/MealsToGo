@@ -26,7 +26,7 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
 		placeId
 	} = restaurant;
 
-	const ratingArray = Array.from(new Array(Math.floor(rating)));
+	let ratingArray = Array.from(new Array(Math.floor(rating > 0 ? rating : 0)));
 
 	return (
 		<RestaurantCard elevation={5}>
