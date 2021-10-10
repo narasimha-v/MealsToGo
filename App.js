@@ -7,6 +7,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { Navigation } from './src/infrastructure/navigation';
 import { theme } from './src/infrastructure/theme';
+import { FavouritesContextPropvider } from './src/services/favourites';
 import { LocationContextProvider } from './src/services/location';
 import { RestaurantsContextProvider } from './src/services/restaurants';
 
@@ -25,11 +26,13 @@ export default function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<LocationContextProvider>
-				<RestaurantsContextProvider>
-					<Navigation />
-				</RestaurantsContextProvider>
-			</LocationContextProvider>
+			<FavouritesContextPropvider>
+				<LocationContextProvider>
+					<RestaurantsContextProvider>
+						<Navigation />
+					</RestaurantsContextProvider>
+				</LocationContextProvider>
+			</FavouritesContextPropvider>
 		</ThemeProvider>
 	);
 }
