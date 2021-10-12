@@ -3,7 +3,8 @@ import {
 	Oswald_400Regular,
 	useFonts as useOswald
 } from '@expo-google-fonts/oswald';
-import React from 'react';
+import * as firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { Navigation } from './src/infrastructure/navigation';
 import { theme } from './src/infrastructure/theme';
@@ -11,7 +12,32 @@ import { FavouritesContextPropvider } from './src/services/favourites';
 import { LocationContextProvider } from './src/services/location';
 import { RestaurantsContextProvider } from './src/services/restaurants';
 
+const firebaseConfig = {
+	apiKey: 'AIzaSyCuMxLyX3f4SO5H_GjtbhYZw_JUqf0MIKI',
+	authDomain: 'mealstogo-ef5e0.firebaseapp.com',
+	projectId: 'mealstogo-ef5e0',
+	storageBucket: 'mealstogo-ef5e0.appspot.com',
+	messagingSenderId: '21096260239',
+	appId: '1:21096260239:web:9df26703aae5eaa21206fa'
+};
+
+if (!firebase.apps.length) {
+	firebase.initializeApp(firebaseConfig);
+}
+
 export default function App() {
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+	useEffect(() => {
+		firebase
+			.auth()
+			.signInWithEmailAndPassword('ted@gmail.com', 'Testing1!')
+			.then((_) => {
+				setIsAuthenticated(true);
+			})
+			.catch(console.error);
+	}, []);
+
 	const [oswaldLoaded] = useOswald({
 		Oswald_400Regular
 	});
@@ -20,7 +46,7 @@ export default function App() {
 		Lato_400Regular
 	});
 
-	if (!oswaldLoaded || !latoLoaded) {
+	if (!oswaldLoaded || !latoLoaded || !isAuthenticated) {
 		return null;
 	}
 
