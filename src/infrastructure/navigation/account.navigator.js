@@ -1,26 +1,19 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { View, Text } from 'react-native';
+import React from 'react';
+import {
+	AccountScreen,
+	LoginScreen,
+	RegisterScreen
+} from '../../features/account/screens';
 
 const Stack = createStackNavigator();
-
-const AccountScreen = () => (
-	<View>
-		<Text>Account Screen</Text>
-	</View>
-);
-
-const LoginScreen = () => (
-	<View>
-		<Text>Login Screen</Text>
-	</View>
-);
 
 export const AccountNavigator = () => {
 	return (
 		<Stack.Navigator headerMode={'none'}>
-			<Stack.Screen name={'Main'} component={AccountScreen} />
+			<Stack.Screen name={'Welcome'} component={AccountScreen} />
 			<Stack.Screen name={'Login'} component={LoginScreen} />
+			<Stack.Screen name={'Register'} component={RegisterScreen} />
 		</Stack.Navigator>
 	);
 };
