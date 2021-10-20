@@ -8,9 +8,6 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components/native';
 import { Navigation } from './src/infrastructure/navigation';
 import { theme } from './src/infrastructure/theme';
-import { FavouritesContextPropvider } from './src/services/favourites';
-import { LocationContextProvider } from './src/services/location';
-import { RestaurantsContextProvider } from './src/services/restaurants';
 import { AuthenticationContextProvider } from './src/services/authentication';
 
 const firebaseConfig = {
@@ -42,13 +39,7 @@ export default function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<AuthenticationContextProvider>
-				<FavouritesContextPropvider>
-					<LocationContextProvider>
-						<RestaurantsContextProvider>
-							<Navigation />
-						</RestaurantsContextProvider>
-					</LocationContextProvider>
-				</FavouritesContextPropvider>
+				<Navigation />
 			</AuthenticationContextProvider>
 		</ThemeProvider>
 	);

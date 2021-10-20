@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { loginRequest, registerRequest } from './authentication.service';
+import * as firebase from 'firebase';
 
 export const AuthenticationContext = createContext();
 
@@ -7,6 +8,12 @@ export const AuthenticationContextProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
+
+	firebase.auth().onAuthStateChanged((u) => {
+		if (u) {
+			setUser(u);
+		}
+	});
 
 	const onLogin = async (email, password) => {
 		setIsLoading(true);
@@ -36,6 +43,11 @@ export const AuthenticationContextProvider = ({ children }) => {
 		}
 	};
 
+	const onLogout = () => {
+		setUser(null);
+		firebase.auth().signOut();
+	};
+
 	return (
 		<AuthenticationContext.Provider
 			value={{
@@ -44,7 +56,8 @@ export const AuthenticationContextProvider = ({ children }) => {
 				isLoading,
 				error,
 				onLogin,
-				onRegister
+				onRegister,
+				onLogout
 			}}>
 			{children}
 		</AuthenticationContext.Provider>
