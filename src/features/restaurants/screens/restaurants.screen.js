@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Colors } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { FavouritesBar } from '../../../components/favourites';
@@ -7,13 +7,7 @@ import { Spacer } from '../../../components/spacer';
 import { SafeArea } from '../../../components/utils';
 import { FavouritesContext } from '../../../services/favourites';
 import { RestaurantsContext } from '../../../services/restaurants';
-import { RestaurantInfoCard, Search } from '../Components';
-
-const RestaurantList = styled(FlatList).attrs({
-	contentContainerStyle: {
-		padding: 16
-	}
-})``;
+import { RestaurantInfoCard, RestaurantList, Search } from '../Components';
 
 const Loader = styled(SafeArea)`
 	justify-content: center;
