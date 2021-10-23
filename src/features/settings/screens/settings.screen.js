@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { Avatar, List } from 'react-native-paper';
 import styled from 'styled-components/native';
 import { Spacer } from '../../../components/spacer';
@@ -10,7 +11,7 @@ const SettingsItem = styled(List.Item)`
 	padding: ${(props) => props.theme.space[3]};
 `;
 
-const AvatarContainer = styled.View`
+const AvatarContainer = styled(TouchableOpacity)`
 	align-items: center;
 	padding-top: ${(props) => props.theme.space[4]};
 `;
@@ -19,7 +20,7 @@ export const SettingsScreen = ({ navigation }) => {
 	const { onLogout, user } = useContext(AuthenticationContext);
 	return (
 		<SafeArea>
-			<AvatarContainer>
+			<AvatarContainer onPress={() => navigation.navigate('Camera')}>
 				<Avatar.Icon icon={'human'} size={100} backgroundColor={'#2182BD'} />
 				<Spacer position={'top'} size={'large'}>
 					<Text variant={'label'}>{user.email}</Text>
