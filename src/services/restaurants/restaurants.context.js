@@ -11,21 +11,18 @@ export const RestaurantsContextProvider = ({ children }) => {
 	const { location } = useContext(LocationContext);
 
 	useEffect(() => {
-		const retrieveRestaurants = (loc) => {
+		const retrieveRestaurants = async (loc) => {
 			setIsLoading(true);
 			setRestaurants([]);
-
-			setTimeout(async () => {
-				try {
-					const res = await restaurantRequest(loc);
-					const transformedRes = restaurantTransform(res);
-					setRestaurants(transformedRes);
-				} catch (err) {
-					setError(err);
-				} finally {
-					setIsLoading(false);
-				}
-			}, 2000);
+			try {
+				const res = await restaurantRequest(loc);
+				const transformedRes = restaurantTransform(res);
+				setRestaurants(transformedRes);
+			} catch (err) {
+				setError(err);
+			} finally {
+				setIsLoading(false);
+			}
 		};
 
 		if (location) {
