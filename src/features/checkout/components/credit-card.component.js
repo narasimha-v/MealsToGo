@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { LiteCreditCardInput } from 'react-native-credit-card-input';
-import { SafeArea } from '../../../components/utils';
 import { cardTokenRequest } from '../../../services/checkout';
 
 export const CreditCardInput = ({ name = 'Ted' }) => {
@@ -21,9 +20,5 @@ export const CreditCardInput = ({ name = 'Ted' }) => {
 		console.log(info);
 	};
 
-	return (
-		<SafeArea>
-			<LiteCreditCardInput onChange={onChange} />
-		</SafeArea>
-	);
+	return <LiteCreditCardInput onChange={onChange} />;
 };
