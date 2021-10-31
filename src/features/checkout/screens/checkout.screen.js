@@ -5,6 +5,7 @@ import { Spacer } from '../../../components/spacer';
 import { Text } from '../../../components/typography';
 import { SafeArea } from '../../../components/utils';
 import { CartContext } from '../../../services/cart';
+import { payRequest } from '../../../services/checkout';
 import { RestaurantInfoCard } from '../../restaurants/Components';
 import {
 	CartIcon,
@@ -12,19 +13,42 @@ import {
 	ClearButton,
 	CreditCardInput,
 	NameInput,
-	PayButton
+	PayButton,
+	PaymentProcessing
 } from '../components';
 
-export const CheckoutScreen = () => {
+export const CheckoutScreen = ({ navigation }) => {
 	const { cart, restaurant, clearCart } = useContext(CartContext);
 	const [sum, setSum] = useState(0);
-	const [name, setName] = useState(null);
+	const [name, setName] = useState('');
+	const [card, setCard] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const onPay = () => {
+		if (!card || !card.id) {
+			navigation.navigate('CheckoutError', {
+				error: 'Please fill in a valid credit card'
+			});
+			return;
+		}
+		setIsLoading(true);
+		payRequest(card.id, name, sum)
+			.then((res) => {
+				setIsLoading(false);
+				clearCart();
+				navigation.navigate('CheckoutSuccess');
+			})
+			.catch((e) => {
+				setIsLoading(false);
+				navigation.navigate('CheckoutError', { error: e });
+			});
+	};
 
 	useEffect(() => {
 		if (!cart.length) {
 			setSum(0);
 		} else {
-			setSum(cart.reduce((acc, { price }) => price / 100 + acc, 0));
+			setSum(cart.reduce((acc, { price }) => price + acc, 0));
 		}
 	}, [cart]);
 
@@ -42,6 +66,7 @@ export const CheckoutScreen = () => {
 	return (
 		<SafeArea>
 			<RestaurantInfoCard restaurant={restaurant} />
+			{isLoading && <PaymentProcessing />}
 			<ScrollView>
 				<Spacer position={'left'} size={'medium'}>
 					<Spacer position={'top'} size={'large'}>
@@ -52,28 +77,31 @@ export const CheckoutScreen = () => {
 							<List.Item key={i} title={`${item} - ${price / 100}`} />
 						))}
 					</List.Section>
-					<Text>Total: {sum}</Text>
+					<Text>Total: {sum / 100}</Text>
 				</Spacer>
-				<NameInput
-					label={'Name'}
-					value={name}
-					onChangeText={(t) => {
-						if (t.length) {
-							setName(t);
-						} else {
-							setName(null);
-						}
-					}}
-				/>
+				<NameInput label={'Name'} value={name} onChangeText={setName} />
 				<Spacer position={'top'} size={'large'}>
-					{name && <CreditCardInput name={name} />}
+					{name.length > 0 && (
+						<CreditCardInput
+							name={name}
+							onSuccess={setCard}
+							onError={navigation.navigate('CheckoutError', {
+								error: 'Somehing went wrong processing your credit card'
+							})}
+						/>
+					)}
 				</Spacer>
 				<Spacer position={'top'} size={'xl'}>
-					<PayButton icon={'cash-usd'} mode={'contained'}>
+					<PayButton
+						disabled={isLoading}
+						icon={'cash-usd'}
+						mode={'contained'}
+						onPress={onPay}>
 						Pay
 					</PayButton>
 					<Spacer position={'top'} size={'large'}>
 						<ClearButton
+							disabled={isLoading}
 							icon={'cart-off'}
 							mode={'contained'}
 							onPress={clearCart}>
